@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:mynotes/constans/routes.dart';
-import 'package:mynotes/views/login_screen.dart';
-import 'package:mynotes/views/mynotes.dart';
-import 'package:mynotes/views/register_screen.dart';
-import 'package:mynotes/views/verify_email_screen.dart';
+import 'package:mynotes/views/index.dart';
+import 'package:mynotes/views/login_view.dart';
+import 'package:mynotes/views/notes_view.dart';
+import 'package:mynotes/views/register_view.dart';
+import 'package:mynotes/views/verify_email_view.dart';
 import 'dart:developer' as console show log;
 
 void main() {
@@ -23,12 +24,12 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: const LoginScreen(),
+      home: const Index(),
       routes: {
-        loginRoute: (context) => const LoginScreen(),
-        registerRoute: (context) => const RegisterScreen(),
-        verifyEmailRoute: (context) => const VerifyEmailScreen(),
-        notes: (context) => const MyNotes()
+        loginRoute: (context) => const LoginView(),
+        registerRoute: (context) => const RegisterView(),
+        verifyEmailRoute: (context) => const VerifyEmailView(),
+        notesRoute: (context) => const NotesView()
       },
     );
   }

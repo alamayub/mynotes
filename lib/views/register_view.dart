@@ -1,17 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:mynotes/constans/routes.dart';
+import '../services/auth/auth_exceptions.dart';
+import '../services/auth/auth_service.dart';
+import '../utilities/message_dialog.dart';
 import '../utilities/rounded_submit_button.dart';
 import '../utilities/text_form_field.dart';
-import 'dart:developer' as console show log;
 
-class RegisterScreen extends StatefulWidget {
-  const RegisterScreen({Key? key}) : super(key: key);
+class RegisterView extends StatefulWidget {
+  const RegisterView({Key? key}) : super(key: key);
 
   @override
-  State<RegisterScreen> createState() => _RegisterScreenState();
+  State<RegisterView> createState() => _RegisterViewState();
 }
 
-class _RegisterScreenState extends State<RegisterScreen> {
+class _RegisterViewState extends State<RegisterView> {
   late final TextEditingController _email;
   late final TextEditingController _password;
 
@@ -57,8 +59,37 @@ class _RegisterScreenState extends State<RegisterScreen> {
             const SizedBox(height: 12),
             RoundedSubmitButton(
               text: 'Register',
-              function: () => {
-                console.log('login clicked'),
+              function: () async {
+                final email = _email.text.trim();
+                final password = _password.text.trim();
+                try {
+                  await AuthService.firebase().createUser(
+                    email: email,
+                    password: password,
+                  );
+                  final user = AuthService.firebase().currentUser;
+                  if (user?.isEmailVerified ?? false) {
+                    // ignore: use_build_context_synchronously
+                    Navigator.of(context).pushNamedAndRemoveUntil(
+                      notesRoute,
+                      (route) => false,
+                    );
+                  } else {
+                    // ignore: use_build_context_synchronously
+                    Navigator.of(context).pushNamedAndRemoveUntil(
+                      verifyEmailRoute,
+                      (route) => false,
+                    );
+                  }
+                } on WeakPasswordAuthException {
+                  await showMessageDialog(context, 'Please use a strong password!');
+                } on EmailAlreadyInUseAuthException {
+                  await showMessageDialog(context, 'This email is already used by another account!');
+                } on InvalidEmailAuthException {
+                  await showMessageDialog(context, 'Invalid email!');
+                } on GenericAuthException {
+                  await showMessageDialog(context, 'Authentication Error!');
+                }
               },
             ),
             const SizedBox(height: 20),

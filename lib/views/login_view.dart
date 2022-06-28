@@ -1,17 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:mynotes/constans/routes.dart';
+import 'package:mynotes/services/auth/auth_exceptions.dart';
+import 'package:mynotes/services/auth/auth_service.dart';
+import 'package:mynotes/utilities/message_dialog.dart';
 import 'package:mynotes/utilities/rounded_submit_button.dart';
 import 'package:mynotes/utilities/text_form_field.dart';
-import 'dart:developer' as console show log;
 
-class LoginScreen extends StatefulWidget {
-  const LoginScreen({Key? key}) : super(key: key);
+class LoginView extends StatefulWidget {
+  const LoginView({Key? key}) : super(key: key);
 
   @override
-  State<LoginScreen> createState() => _LoginScreenState();
+  State<LoginView> createState() => _LoginViewState();
 }
 
-class _LoginScreenState extends State<LoginScreen> {
+class _LoginViewState extends State<LoginView> {
   late final TextEditingController _email;
   late final TextEditingController _password;
 
@@ -57,8 +59,35 @@ class _LoginScreenState extends State<LoginScreen> {
             const SizedBox(height: 12),
             RoundedSubmitButton(
               text: 'Login',
-              function: () => {
-                console.log('login clicked'),
+              function: () async {
+                final email = _email.text.trim();
+                final password = _password.text.trim();
+                try {
+                  await AuthService.firebase().login(
+                    email: email,
+                    password: password,
+                  );
+                  final user = AuthService.firebase().currentUser;
+                  if (user?.isEmailVerified ?? false) {
+                    // ignore: use_build_context_synchronously
+                    Navigator.of(context).pushNamedAndRemoveUntil(
+                      notesRoute,
+                      (route) => false,
+                    );
+                  } else {
+                    // ignore: use_build_context_synchronously
+                    Navigator.of(context).pushNamedAndRemoveUntil(
+                      verifyEmailRoute,
+                      (route) => false,
+                    );
+                  }
+                } on UserNotFoundAuthException {
+                  await showMessageDialog(context, 'User not found!');
+                } on WrongPasswordAuthException {
+                  await showMessageDialog(context, 'Wrong Password!');
+                } on GenericAuthException {
+                  await showMessageDialog(context, 'Authentication Error!');
+                }
               },
             ),
             const SizedBox(height: 20),
