@@ -1,0 +1,46 @@
+{
+  "project_info": {
+    "project_number": "755065207079",
+    "project_id": "mynotes-be9ac",
+    "storage_bucket": "mynotes-be9ac.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:755065207079:android:530aae98036566c80f5102",
+        "android_client_info": {
+          "package_name": "com.fourcoders.mynotes"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "755065207079-3quiphat9ddt0dmidmi2cvbbu19otikh.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC1T6pbfUVeDLxpDadIhZBFInIIqUabjuM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "755065207079-3quiphat9ddt0dmidmi2cvbbu19otikh.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "755065207079-vgm4rnntt31nej1sdrktea6ogdlqirpa.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.fourcoders.mynotes"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
