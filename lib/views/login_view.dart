@@ -68,7 +68,7 @@ class _LoginViewState extends State<LoginView> {
                     password: password,
                   );
                   final user = AuthService.firebase().currentUser;
-                  if (user?.isEmailVerified ?? false) {
+                  if (user?.emailVerified ?? false) {
                     // ignore: use_build_context_synchronously
                     Navigator.of(context).pushNamedAndRemoveUntil(
                       notesRoute,

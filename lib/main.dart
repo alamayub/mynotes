@@ -7,6 +7,13 @@ import 'package:mynotes/views/register_view.dart';
 import 'package:mynotes/views/verify_email_view.dart';
 import 'dart:developer' as console show log;
 
+/*void main() async {
+  console.log('app initialized successfully!');
+  WidgetsFlutterBinding.ensureInitialized();
+  await AuthService.firebase().initialize();
+  runApp(const MyApp());
+} */
+
 void main() {
   console.log('app initialized successfully!');
   runApp(const MyApp());
