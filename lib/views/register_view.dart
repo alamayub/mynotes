@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:mynotes/services/auth/auth_exceptions.dart';
 import 'package:mynotes/services/auth/bloc/auth_bloc.dart';
 import 'package:mynotes/services/auth/bloc/auth_event.dart';
 import 'package:mynotes/services/auth/bloc/auth_state.dart';
-import '../services/auth/auth_exceptions.dart';
-import '../utilities/message_dialog.dart';
-import '../utilities/rounded_submit_button.dart';
-import '../utilities/text_form_field.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:mynotes/utilities/message_dialog.dart';
+import 'package:mynotes/utilities/rounded_submit_button.dart';
+import 'package:mynotes/utilities/text_form_field.dart';
 
 class RegisterView extends StatefulWidget {
   const RegisterView({Key? key}) : super(key: key);
