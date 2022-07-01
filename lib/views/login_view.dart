@@ -3,6 +3,7 @@ import 'package:mynotes/constans/routes.dart';
 import 'package:mynotes/services/auth/auth_exceptions.dart';
 import 'package:mynotes/services/auth/bloc/auth_bloc.dart';
 import 'package:mynotes/services/auth/bloc/auth_event.dart';
+import 'package:mynotes/services/auth/bloc/auth_state.dart';
 import 'package:mynotes/utilities/message_dialog.dart';
 import 'package:mynotes/utilities/rounded_submit_button.dart';
 import 'package:mynotes/utilities/text_form_field.dart';
@@ -59,21 +60,26 @@ class _LoginViewState extends State<LoginView> {
               textInputType: TextInputType.visiblePassword,
             ),
             const SizedBox(height: 12),
-            RoundedSubmitButton(
-              text: 'Login',
-              function: () async {
-                final email = _email.text.trim();
-                final password = _password.text.trim();
-                try {
-                  context.read<AuthBloc>().add(AuthEventLogin(email, password));
-                } on UserNotFoundAuthException {
-                  await showMessageDialog(context, 'User not found!');
-                } on WrongPasswordAuthException {
-                  await showMessageDialog(context, 'Wrong Password!');
-                } on GenericAuthException {
-                  await showMessageDialog(context, 'Authentication Error!');
+            BlocListener<AuthBloc, AuthState>(
+              listener: (context, state) async {
+                if (state is AuthStateLoggedOut) {
+                  if (state.exception is UserNotFoundAuthException) {
+                    await showMessageDialog(context, 'User not found!');
+                  } else if (state.exception is WrongPasswordAuthException) {
+                    await showMessageDialog(context, 'Wrong credentials!');
+                  } else if (state.exception is GenericAuthException) {
+                    await showMessageDialog(context, 'Authentication Error!');
+                  }
                 }
               },
+              child: RoundedSubmitButton(
+                text: 'Login',
+                function: () async {
+                  final email = _email.text.trim();
+                  final password = _password.text.trim();
+                  context.read<AuthBloc>().add(AuthEventLogin(email, password));
+                },
+              ),
             ),
             const SizedBox(height: 20),
             Row(
